@@ -388,7 +388,31 @@ export class PosOrder extends Base {
 
     assert_editable() {
         if (this.finalized) {
+            if (window.Sentry) {
+                window.Sentry.withScope((scope) => {
+                    scope.setTag("location", "pos_order.assert_editable");
+                    scope.setExtra("order_uuid", this.uuid);
+                    scope.setExtra("pos_session_id", this.session_id?.id);
+                    scope.setExtra("order_state", this.state);
+                    window.Sentry.captureMessage("Assertion failed: Invalid order state", {
+                        level: "error",
+                    });
+                });
+            }
             throw new Error("Finalized Order cannot be modified");
+        } else {
+            // TODO: remove testing code
+            if (window.Sentry) {
+                window.Sentry.withScope((scope) => {
+                    scope.setTag("location", "pos_order.assert_editable");
+                    scope.setExtra("order_uuid", this.uuid);
+                    scope.setExtra("pos_session_id", this.session_id?.id);
+                    scope.setExtra("order_state", this.state);
+                    window.Sentry.captureMessage("FAKE: Assertion failed: Invalid order state", {
+                        level: "error",
+                    });
+                });
+            }
         }
         return true;
     }

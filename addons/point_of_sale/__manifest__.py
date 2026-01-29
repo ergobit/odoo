@@ -99,6 +99,8 @@
         # PoS assets
 
         'point_of_sale.base_app': [
+            "point_of_sale/static/src/sentry_bundle.js",
+            "point_of_sale/static/src/sentry_loader.js",
             ("include", "web._assets_helpers"),
             ("include", "web._assets_backend_helpers"),
             ("include", "web._assets_primary_variables"),
